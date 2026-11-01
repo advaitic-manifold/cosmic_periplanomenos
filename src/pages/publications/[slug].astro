@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+import { papers } from '../../data/site';
+export function getStaticPaths() { return papers.map(p => ({ params: { slug: p.slug }, props: { p } })); }
+const { p } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const ld = { '@context': 'https://schema.org', '@type': 'ScholarlyArticle', headline: p.title,
+  author: p.authors.split(', ').map((n: string) => ({ '@type': 'Person', name: n })), keywords: p.keywords.join(', ') };
+---
+<Base title={`${p.title} — Manav Patel`} description={p.summary.slice(0, 155)} jsonLd={ld}>
+  <div class="wrap">
+    <p class="mono"><a href={`${base}#publications`}>← Publications</a></p>
+    <h1 style="font-size:2rem">{p.title}</h1>
+    <p class="mono">{p.authors}<br />{p.venue} · {p.status}</p>
+    <div class="panel"><p>{p.summary}</p></div>
+    <p class="mono">Keywords: {p.keywords.join(', ')}</p>
+    <p class="mono">DOI · BibTeX · code · PDF: [REAL DATA REQUIRED]</p>
+  </div>
+</Base>

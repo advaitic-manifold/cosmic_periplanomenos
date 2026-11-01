@@ -1,0 +1,67 @@
+---
+import Universe from '../components/react/Universe';
+import CommandPalette from '../components/react/CommandPalette';
+import { person } from '../data/site';
+interface Props { title: string; description: string; jsonLd?: object; }
+const { title, description, jsonLd } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta name="twitter:card" content="summary" />
+  <meta name="theme-color" content="#05070d" />
+  {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <Universe client:idle />
+  <CommandPalette client:idle base={base} />
+  <header class="nav">
+    <a href={base} class="brand">{person.name}</a>
+    <nav aria-label="Primary">
+      <a href={`${base}#about`}>About</a><a href={`${base}#research`}>Research</a>
+      <a href={`${base}#projects`}>Projects</a><a href={`${base}#publications`}>Publications</a>
+      <a href={`${base}#mathematics`}>Math</a><a href={`${base}#skills`}>Skills</a><a href={`${base}#experience`}>Experience</a>
+      <a href={`${base}#timeline`}>Timeline</a><a href={`${base}#cv`}>CV</a>
+      <a href={`${base}#contact`}>Contact</a><a href={`${base}cosmic-sentinel/`}>Cosmic Sentinel</a>
+    </nav>
+  </header>
+  <main id="main"><slot /></main>
+</body>
+</html>
+<style is:global>
+  :root { --bg:#05070d; --ink:#e8ecf4; --mute:#8d97ab; --cyan:#5ad1e0; --gold:#d9b46a; --red:#e0685a; --amber:#e0a35a; --line:rgba(150,170,210,.18); }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+  body { margin:0; background:radial-gradient(ellipse at 50% 20%, #0b1426, var(--bg) 70%); color:var(--ink); font:16px/1.65 Inter, system-ui, sans-serif; }
+  a { color:var(--cyan); } a:focus-visible, button:focus-visible, input:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+  .skip { position:absolute; left:-999px; } .skip:focus { left:8px; top:8px; background:#000; padding:8px; z-index:99; }
+  .nav { position:fixed; inset:0 0 auto 0; z-index:5; display:flex; gap:1.5rem; align-items:center; justify-content:space-between; padding:.7rem 1.2rem; background:linear-gradient(#05070dcc,transparent); flex-wrap:wrap; }
+  .nav nav { display:flex; gap:1rem; flex-wrap:wrap; font:12px/1 'JetBrains Mono', ui-monospace, monospace; text-transform:uppercase; letter-spacing:.08em; }
+  .nav a { text-decoration:none; color:var(--mute); } .nav a:hover, .brand { color:var(--ink); } .brand { font-weight:600; }
+  section, .wrap { position:relative; z-index:1; max-width:62rem; margin:0 auto; padding:7rem 1.4rem 3rem; }
+  section > h2 { font:12px/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin:0 0 1.2rem; }
+  h1 { font-size:clamp(2.4rem,7vw,5rem); line-height:1.02; margin:.2em 0; font-weight:600; letter-spacing:-.02em; }
+  .mono { font:12px/1.5 'JetBrains Mono', ui-monospace, monospace; color:var(--mute); }
+  .hero { min-height:100svh; display:flex; flex-direction:column; justify-content:center; }
+  .panel { background:rgba(5,7,13,.66); border-left:1px solid var(--line); padding:.2rem 0 .2rem 1.1rem; margin:1.4rem 0; }
+  .tier { display:inline-block; font:11px/1 'JetBrains Mono', ui-monospace, monospace; padding:.25rem .45rem; border:1px solid var(--line); margin-right:.4rem; color:var(--cyan); }
+  .tier.demo { border-style:dashed; color:#b79cff; } .tier.fail { color:var(--red); }
+  ul.plain { list-style:none; padding:0; } ul.plain li { margin:.5rem 0; }
+  .hud { position:fixed; left:1rem; bottom:.8rem; z-index:4; font:11px/1.5 'JetBrains Mono', ui-monospace, monospace; color:var(--mute); pointer-events:none; }
+  canvas.universe { position:fixed; inset:0; width:100%; height:100%; z-index:0; }
+  button { font:inherit; color:var(--ink); background:transparent; border:1px solid var(--line); padding:.45rem .8rem; cursor:pointer; }
+  button[aria-pressed="true"] { border-color:var(--gold); color:var(--gold); }
+</style>

@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import { person, papers, experience, timeline, skills } from '../data/site';
+const base = import.meta.env.BASE_URL;
+const ld = { '@context': 'https://schema.org', '@type': 'Person', name: person.name,
+  url: Astro.site?.href, email: `mailto:${person.email}`, sameAs: [person.github, person.linkedin],
+  jobTitle: 'AI/ML researcher', knowsAbout: ['Machine learning', 'Scientific computing', 'Computer vision', 'AI for astronomy'] };
+---
+<Base title="Manav Patel — AI/ML Research, Scientific Computing, AI for Astronomy"
+      description="Manav Patel: AI/ML researcher building reproducible, auditable machine-learning pipelines for scientific and clinical data, with astronomical imaging as the testbed." jsonLd={ld}>
+  <section class="hero" id="home">
+    <p class="mono">RENDER: <span data-hud-mode>…</span> · EVIDENCE-TIERED RESEARCH UNIVERSE</p>
+    <h1>{person.name}</h1>
+    <p style="font-size:1.35rem;max-width:34rem">{person.tagline}</p>
+    <p class="mono">Artificial Intelligence · Machine Learning · Scientific Computing · AI for Astronomy</p>
+  </section>
+
+  <section id="about"><h2>About · Observatory</h2>
+    <div class="panel"><p>I am an information-technology graduate (B.Tech, CGPA 9.22/10) and early-career AI/ML researcher. I design independent, end-to-end, reproducible machine-learning and data-engineering pipelines and document them as formal papers. Astronomical imaging is the real-world, messy-data domain on which I engineer and validate unsupervised learning, statistical auditing and deterministic representation methods.</p>
+    <p>A consistent habit in this work is reporting failed checks alongside successes. This site follows the same rule: objects carry an evidence tier, and anything without real data is labelled.</p></div>
+    <p><span class="tier">T1 verified</span><span class="tier">T2 reported</span><span class="tier fail">T3 disclosed failure</span><span class="tier demo">T4 demonstration</span></p>
+  </section>
+
+  <section id="research"><h2>Research · Galaxy</h2>
+    <ul class="plain">
+      <li>Interpretable and trustworthy ML for scientific and clinical data</li>
+      <li>Unsupervised learning, anomaly detection and statistical auditing (null models, false-positive control)</li>
+      <li>Deterministic, zero-parameter representation learning and differentiable programming</li>
+      <li>Information-theoretic and spectral descriptors; calibration and uncertainty quantification</li>
+      <li>Reproducible, auditable research pipelines</li>
+    </ul>
+  </section>
+
+  <section id="projects"><h2>Projects · Planetary systems</h2>
+    {papers.map(p => (<div class="panel"><strong>{p.title.split(':')[0]}</strong><div class="mono">{p.domain} · {p.status}</div><p>{p.summary}</p></div>))}
+    <p>Live demos: {person.demos.map((d, i) => (<><a href={d}>{new URL(d).host}</a>{i < person.demos.length - 1 ? ' · ' : ''}</>))}</p>
+    <p class="mono">COSMIC SENTINEL, Physio Vision and Log Monitoring: [REAL DATA REQUIRED] — not described in the supplied CV or papers. <a href={`${base}cosmic-sentinel/`}>Flagship interface (demonstration)</a></p>
+  </section>
+
+  <section id="publications"><h2>Publications · Constellation</h2>
+    <ol>{papers.map(p => (<li style="margin:1rem 0"><a href={`${base}publications/${p.slug}/`}>{p.title}</a><div class="mono">{p.authors} · {p.venue} · {p.status}</div></li>))}</ol>
+  </section>
+
+  <section id="mathematics"><h2>Mathematics · Instruments of the visualization</h2>
+    <div class="panel mono" style="font-size:13px;line-height:1.8">
+      <p><b>Gravitational lens (point mass).</b> r_s = 2GM/c². Lens equation β = θ − θ_E²/θ, so θ± = ½(β ± √(β² + 4θ_E²)), with θ_E² = 2 r_s D_LS /(D_L D_S). Primary-image magnification μ₊ = ½[1 + (u²+2)/(u√(u²+4))], u = β/θ_E. Every background star and galaxy in the black-hole sector is moved by this map.</p>
+      <p><b>Schwarzschild scales.</b> Photon sphere r = 1.5 r_s; apparent shadow radius b_c = (3√3/2) r_s ≈ 2.598 r_s (the black disc and gold ring); innermost stable circular orbit r = 3 r_s (inner disc edge).</p>
+      <p><b>Accretion disc.</b> T(r) ∝ r^(−3/4) [1 − √(r_in/r)]^(1/4). Local circular-orbit speed v = c·√(r_s / (2(r − r_s))). Doppler factor δ = 1/[γ(1 − v·n̂)], specific intensity I_ν ∝ δ³ (I_ν/ν³ is Lorentz-invariant): the approaching side is brighter and bluer.</p>
+      <p><b>Planets.</b> Kepler's third law T² ∝ a³, so angular rate ω ∝ a^(−3/2).</p>
+      <p><b>4D: Hopf fibration.</b> h: S³ → S², h(z₁,z₂) = (2 z₁ z̄₂, |z₁|² − |z₂|²). Each fibre is the circle &#123;e^(it)·(z₁,z₂)&#125;; fibres are drawn as (cos η e^(it), sin η e^(i(t+γ))), rotated in 4D and projected p = (x,y,z)/(d − w).</p>
+      <p><b>5D: penteract.</b> The 5-cube (32 vertices, 80 edges) is rotated in four coordinate planes of ℝ⁵ and perspective-projected twice (5D→4D→3D).</p>
+      <p class="tier demo">Scope</p> These are visualizations of real formulas, not general-relativistic ray tracing. Distances and scales are exaggerated, pulsar rotation is slowed for visibility, and the objects are not measurements of any real source.</div>
+  </section>
+
+  <section id="skills"><h2>Skills · Knowledge network</h2>
+    {Object.entries(skills).map(([k, v]) => (<div class="panel"><strong>{k}</strong><div class="mono">{v.join(' · ')}</div></div>))}
+  </section>
+
+  <section id="experience"><h2>Experience · Orbital missions</h2>
+    {experience.map(e => (<div class="panel"><strong>{e.role}</strong> — {e.org}<div class="mono">{e.when}</div><p>{e.note}</p></div>))}
+  </section>
+
+  <section id="timeline"><h2>Timeline · Trajectory</h2>
+    <ol class="plain">{timeline.map(t => (<li><span class="mono">{t.when}</span> — {t.what}</li>))}</ol>
+  </section>
+
+  <section id="cv"><h2>CV</h2>
+    <p>Add <code>Manav_Patel_CV.pdf</code> to <code>public/</code> and it is linked here: <a href={`${base}Manav_Patel_CV.pdf`}>Download CV</a>.</p>
+  </section>
+
+  <section id="contact"><h2>Contact · Establish communication link</h2>
+    <ul class="plain">
+      <li>Email: <a href={`mailto:${person.email}`}>{person.email}</a></li>
+      <li>GitHub: <a href={person.github}>{person.github}</a></li>
+      <li>LinkedIn: <a href={person.linkedin}>{person.linkedin}</a></li>
+      <li class="mono">Google Scholar · ORCID · ResearchGate: [REAL DATA REQUIRED]</li>
+    </ul>
+  </section>
+</Base>
